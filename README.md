@@ -12,3 +12,6 @@
 # docker exec -it node-app-nginx sh
 # cat /etc/timezone
 # America/New_York
+#-----------------------------
+# docker exec -it jenkins bash
+# rm -rf /var/jenkins_home/jobs/*/builds
