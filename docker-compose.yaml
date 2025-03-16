@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   node-app:
-    image: node-app:1.0
+    image: chesnokov70/node-app:${BUILD_ID}
     container_name: node-app
     ports:
       - "3000:3000"
