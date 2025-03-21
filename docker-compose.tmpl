@@ -6,8 +6,7 @@ services:
     container_name: node-app
     restart: always
   nginx:
-    build:
-      context: ./nginx
+    image: chesnokov70/node-app:nginx
     container_name: nginx
     ports:
       - "80:80"
