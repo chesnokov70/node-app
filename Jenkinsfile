@@ -47,6 +47,7 @@ pipeline {
       steps {
         script {
          sshCommand remote: remote, command: """
+         curl -O https://raw.githubusercontent.com/chesnokov70/node-app/main/docker-compose.tmpl 
          export APP_IMG="${env.REGISTRY}:${env.BUILD_ID}"
          envsubst < docker-compose.tmpl | tee docker-compose.yaml
          docker compose up -d
