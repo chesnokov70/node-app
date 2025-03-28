@@ -46,11 +46,17 @@ pipeline {
     stage ('Deploy node-app') {
       steps {
         script {
-         sshCommand remote: remote, command: """
-         export APP_IMG="${env.REGISTRY}:${env.BUILD_ID}"
-         envsubst < docker-compose.tmpl | tee docker-compose.yaml
-         docker compose up -d
-         """
+          sshCommand remote: remote, command: """
+          export APP_IMG="${env.REGISTRY}:${env.BUILD_ID}"
+          # Check if docker-compose.tmpl exists
+          if [ -f docker-compose.tmpl ]; then
+            envsubst < docker-compose.tmpl | tee docker-compose.yaml
+            docker compose up -d
+          else
+            echo 'docker-compose.tmpl not found!'
+            exit 1
+          fi
+          """
         }
       }
     }
