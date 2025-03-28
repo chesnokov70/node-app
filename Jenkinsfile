@@ -39,6 +39,7 @@ pipeline {
          docker login -u chesnokov70 -p $TOKEN
          docker build -t "${env.REGISTRY}:${env.BUILD_ID}" .
          docker push "${env.REGISTRY}:${env.BUILD_ID}"
+         scp /var/lib/jenkins/workspace/My_Lessons_Folder/node-app/docker-compose.tmpl root@${HOST}:/opt
          """
         }
       }
@@ -48,6 +49,7 @@ pipeline {
         script {
           sshCommand remote: remote, command: """
           export APP_IMG="${env.REGISTRY}:${env.BUILD_ID}"
+          cd /opt
           envsubst < docker-compose.tmpl | tee docker-compose.yaml
           docker compose up -d
           """
