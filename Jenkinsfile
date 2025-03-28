@@ -48,13 +48,8 @@ pipeline {
         script {
           sshCommand remote: remote, command: """
           export APP_IMG="${env.REGISTRY}:${env.BUILD_ID}"
-          if [ -f docker-compose.tmpl ]; then
-            envsubst < docker-compose.tmpl | tee docker-compose.yaml
-            docker compose up -d
-          else
-            echo 'docker-compose.tmpl not found!'
-            exit 1
-          fi
+          envsubst < docker-compose.tmpl | tee docker-compose.yaml
+          docker compose up -d
           """
         }
       }
