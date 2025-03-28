@@ -7,6 +7,7 @@
     docker_projects_dir: /home/ubuntu/docker_projects
 
   tasks:
+    # Docker and Docker Compose Installation Tasks
     - name: Update package index
       apt:
         update_cache: yes
@@ -48,6 +49,7 @@
         name: docker
         state: present
 
+
     - name: Create a new directory for Docker Compose projects
       file:
         path: "{{ docker_projects_dir }}"
@@ -60,10 +62,6 @@
         groups: docker
         append: yes
 
-    - name: Refresh shell session to apply group changes
-      command: newgrp docker
-      become_user: "{{ ansible_user }}"
-
   handlers:
     - name: Reload systemd daemon to pick up new Docker service configuration
       systemd:
@@ -71,5 +69,3 @@
         state: restarted
     - name: daemon-reload
       command: systemctl daemon-reload
-
-
