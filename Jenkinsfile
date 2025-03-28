@@ -49,7 +49,6 @@ pipeline {
          sshCommand remote: remote, command: """
          export APP_IMG="${env.REGISTRY}:${env.BUILD_ID}"
          envsubst < docker-compose.tmpl | tee docker-compose.yaml
-         cat docker-compose.yaml
          docker compose up -d
          """
         }
