@@ -1,5 +1,4 @@
 resource "aws_instance" "node_docker" {
-  count                  = 1
   ami                    = data.aws_ami.ubuntu_ami.id
   instance_type          = var.instance_type
   security_groups        = [aws_security_group.node_sg.name]
@@ -11,7 +10,7 @@ resource "aws_instance" "node_docker" {
   }
 
   tags = {
-    Name = "NodeAppServer-${count.index + 1}"
+    Name = "NodeAppServer"
   }
 }
 
