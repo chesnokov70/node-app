@@ -60,9 +60,10 @@
         groups: docker
         append: yes
 
-    - name: Refresh shell session to apply group changes
-      command: newgrp docker
-      become_user: "{{ ansible_user }}"
+    - name: Restart Docker
+      systemd:
+        name: docker
+        state: restarted
 
   handlers:
     - name: Reload systemd daemon to pick up new Docker service configuration
