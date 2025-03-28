@@ -1,0 +1,76 @@
+---
+- name: Install Docker and Docker Compose and Jenkins backup
+  hosts: all
+  become: true
+  vars:
+    ansible_user: ubuntu
+    docker_projects_dir: /home/ubuntu/docker_projects
+
+  tasks:
+    - name: Update package index
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Install dependencies for Docker
+      apt:
+        name:
+          [
+            "apt-transport-https",
+            "ca-certificates",
+            "gnupg",
+            "software-properties-common",
+          ]
+        state: present
+
+    - name: Import GPG key for Docker repository
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        id: 0EBFCD88
+
+    - name: Add source list for Docker repository
+      apt_repository:
+        repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu jammy stable"
+        state: present
+
+    - name: Install Docker
+      apt:
+        name: docker-ce
+        state: present
+
+    - name: Install Docker Compose
+      apt:
+        name: docker-compose-plugin
+        state: present    
+
+    - name: Create a new group for the Docker socket
+      group:
+        name: docker
+        state: present
+
+    - name: Create a new directory for Docker Compose projects
+      file:
+        path: "{{ docker_projects_dir }}"
+        state: directory
+        mode: "0755"
+
+    - name: Add user to the docker group
+      user:
+        name: "{{ ansible_user }}"
+        groups: docker
+        append: yes
+
+    - name: Restart Docker
+      systemd:
+        name: docker
+        state: restarted
+
+  handlers:
+    - name: Reload systemd daemon to pick up new Docker service configuration
+      systemd:
+        name: docker
+        state: restarted
+    - name: daemon-reload
+      command: systemctl daemon-reload
+
+
