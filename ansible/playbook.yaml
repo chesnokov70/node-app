@@ -1,10 +1,11 @@
 ---
-- name: Install Docker, Docker Compose, and Copy Jenkins SSH Key
+- name: Install Docker and Docker Compose and Jenkins backup
   hosts: all
   become: true
   vars:
     ansible_user: ubuntu
-    jenkins_ssh_public_key: /home/jenkins/.ssh/id_ed25519.pub
+    docker_projects_dir: /home/ubuntu/docker_projects
+
   tasks:
     - name: Update package index
       apt:
@@ -14,21 +15,22 @@
     - name: Install dependencies for Docker
       apt:
         name:
-          - apt-transport-https
-          - ca-certificates
-          - gnupg
-          - software-properties-common
+          [
+            "apt-transport-https",
+            "ca-certificates",
+            "gnupg",
+            "software-properties-common",
+          ]
         state: present
 
-    - name: Add Docker's official GPG key
-      shell: |
-        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/trusted.gpg.d/docker.gpg
-      args:
-        creates: /etc/apt/trusted.gpg.d/docker.gpg
+    - name: Import GPG key for Docker repository
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        id: 0EBFCD88
 
-    - name: Add Docker repository
+    - name: Add source list for Docker repository
       apt_repository:
-        repo: "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/docker.gpg] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+        repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu jammy stable"
         state: present
 
     - name: Install Docker
@@ -39,41 +41,36 @@
     - name: Install Docker Compose
       apt:
         name: docker-compose-plugin
-        state: present
-        update_cache: yes
+        state: present    
 
-    - name: Create Docker group if it doesn't exist
+    - name: Create a new group for the Docker socket
       group:
         name: docker
         state: present
+
+    - name: Create a new directory for Docker Compose projects
+      file:
+        path: "{{ docker_projects_dir }}"
+        state: directory
+        mode: "0755"
 
     - name: Add user to the docker group
       user:
         name: "{{ ansible_user }}"
         groups: docker
         append: yes
-      notify:
-        - Restart Docker
 
-    # Copy SSH key for Jenkins access
-    - name: Ensure .ssh directory exists for root user
-      file:
-        path: /root/.ssh
-        state: directory
-        owner: root
-        group: root
-        mode: '0700'
-
-    - name: Fetch Jenkins public SSH key from Jenkins server
-      fetch:
-        src: /var/lib/jenkins/.ssh/id_ed25519.pub
-        dest: /tmp/id_ed25519.pub
-        flat: yes
-      delegate_to: localhost
-     
-
-  handlers:
     - name: Restart Docker
       systemd:
         name: docker
         state: restarted
+
+  handlers:
+    - name: Reload systemd daemon to pick up new Docker service configuration
+      systemd:
+        name: docker
+        state: restarted
+    - name: daemon-reload
+      command: systemctl daemon-reload
+
+
