@@ -48,7 +48,6 @@ pipeline {
         script {
           sshCommand remote: remote, command: """
           export APP_IMG="${env.REGISTRY}:${env.BUILD_ID}"
-          cd /var/lib/jenkins/workspace/My_Lessons_Folder/node-app
           envsubst < docker-compose.tmpl | tee docker-compose.yaml
           docker compose up -d
           """
