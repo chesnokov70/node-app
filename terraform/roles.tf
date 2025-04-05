@@ -1,12 +1,12 @@
 
 # Create IAM role for monitoring
-resource "aws_iam_instance_profile" "monitoring_profile_devops_course" {
-  name = "monitoring_profile_devops_course"
-  role = aws_iam_role.monitoring_role_devops_course.name
+resource "aws_iam_instance_profile" "node_app_profile" {
+  name = "node_app_profile"
+  role = aws_iam_role.node_app_role.name
 }
 
-resource "aws_iam_role" "monitoring_role_devops_course" {
-  name = "monitoring_role_devops_course"
+resource "aws_iam_role" "node_app_role" {
+  name = "node_app_role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
@@ -23,9 +23,9 @@ resource "aws_iam_role" "monitoring_role_devops_course" {
 }
 
 # RBAC - Role Based Access Control | Least Privilege
-resource "aws_iam_role_policy" "monitoring_role_devops_course" {
-  name = "node_app_policy"
-  role = aws_iam_role.monitoring_role_devops_course.id
+resource "aws_iam_role_policy" "node_app_role" {
+  name = "node_app_role_policy"
+  role = aws_iam_role.node_app_role.id
 
   policy = jsonencode({
     Version = "2012-10-17",
