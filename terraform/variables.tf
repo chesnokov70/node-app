@@ -33,7 +33,7 @@ variable "common_tags" {
   type        = map
   default = {
     Owner       = "Sergei Ches"
-    Project     = "Monitoring"
+    Project     = "Node-app"
     CostCenter  = "12345"
     Environment = "prod"
   }

@@ -7,7 +7,7 @@ pipeline {
   }
   environment {
     REGISTRY = "chesnokov70/node-app"
-    HOST = '34.201.126.20'
+    HOST = '52.91.100.212'
     SSH_KEY = credentials('ssh_instance_key')
     TOKEN = credentials('hub_token')
   }
