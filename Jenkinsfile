@@ -38,22 +38,12 @@ pipeline {
          docker login -u chesnokov70 -p $TOKEN
          docker build -t "${env.REGISTRY}:${env.BUILD_ID}" .
          docker push "${env.REGISTRY}:${env.BUILD_ID}"
-         mkdir -p /var/lib/jenkins/.ssh
-         ssh-keyscan -H ${HOST} >> /var/lib/jenkins/.ssh/known_hosts
-         chmod 600 /var/lib/jenkins/.ssh/known_hosts
-         scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/My_Lessons_Folder/node-app/docker-compose.tmpl root@${HOST}:/opt
+         scp /var/lib/jenkins/workspace/My_Lessons_Folder/node-app/docker-compose.tmpl root@${HOST}:/opt
          """
         }
       }
     }
-
-sh """
-  mkdir -p /var/lib/jenkins/.ssh
-  ssh-keyscan -H ${HOST} >> /var/lib/jenkins/.ssh/known_hosts
-  chmod 600 /var/lib/jenkins/.ssh/known_hosts
-  scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/My_Lessons_Folder/node-app/docker-compose.tmpl root@${HOST}:/opt
-"""
-
+    
     stage ('Deploy node-app') {
       steps {
         script {
