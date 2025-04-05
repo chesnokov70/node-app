@@ -3,13 +3,47 @@ version: '3.8'
 services:
   node-app:
     image: ${APP_IMG}
+    networks:
+      - monitoring
     container_name: node-app
     restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
   nginx:
     image: chesnokov70/node-app:nginx
+    networks:
+      - monitoring    
     container_name: nginx
     ports:
       - "80:80"
     depends_on:
       - node-app
     restart: always
+  node-exporter:
+    image: prom/node-exporter
+    networks:
+      - monitoring    
+    container_name: node-exporter
+    ports:
+      - "9100:9100"
+    restart: always  
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor
+    networks:
+      - monitoring    
+    container_name: cadvisor
+    ports:
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "/sys:/sys:ro"
+      - "/var/lib/docker:/var/lib/docker:ro"
+    restart: always  
+
+networks:
+  monitoring:
+    driver: bridge
