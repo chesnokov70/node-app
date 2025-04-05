@@ -1,5 +1,5 @@
 resource "aws_security_group" "node_sg" {
-  name        = "node_app_sg"
+  name        = "node_app_js_sg"
   description = "Allow SSH, HTTP, and monitoring traffic"  
 
   dynamic "ingress" {
