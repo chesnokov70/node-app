@@ -24,7 +24,7 @@ resource "aws_iam_role" "monitoring_role_devops_course" {
 
 # RBAC - Role Based Access Control | Least Privilege
 resource "aws_iam_role_policy" "monitoring_role_devops_course" {
-  name = "monitoring_role_devops_course_policy"
+  name = "node_app_policy"
   role = aws_iam_role.monitoring_role_devops_course.id
 
   policy = jsonencode({
