@@ -49,9 +49,10 @@ services:
     image: grafana/promtail:main-bfb935d
     volumes:
       - /var/log:/var/log
-      - ./promtail-config.yaml:/etc/promtail/promtail.yaml
-    command: -config.file=/etc/promtail/promtail.yaml    
+      - ./promtail-config.yaml:/etc/promtail/config.yaml
+    command: -config.file=/etc/promtail/config.yaml
     restart: always
+
 
 networks:
   monitoring:
