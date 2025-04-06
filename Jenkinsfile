@@ -7,7 +7,7 @@ pipeline {
   }
   environment {
     REGISTRY = "chesnokov70/node-app"
-    HOST = '54.234.86.175'
+    HOST = '44.203.255.162'
     SSH_KEY = credentials('ssh_instance_key')
     TOKEN = credentials('hub_token')
   }
@@ -54,7 +54,7 @@ pipeline {
           export APP_IMG="${env.REGISTRY}:${env.BUILD_ID}"
           cd /opt
           envsubst < docker-compose.tmpl | sudo tee docker-compose.yaml
-
+          docker compose up -d
           """
         }
       }
