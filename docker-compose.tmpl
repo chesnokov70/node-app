@@ -22,6 +22,7 @@ services:
     depends_on:
       - node-app
     restart: always
+    
   node-exporter:
     image: prom/node-exporter
     networks:
@@ -43,6 +44,14 @@ services:
       - "/sys:/sys:ro"
       - "/var/lib/docker:/var/lib/docker:ro"
     restart: always  
+
+  promtail:
+    image: grafana/promtail:main-bfb935d
+    volumes:
+      - /var/log:/var/log
+      - ./promtail-config.yaml:/etc/promtail/promtail.yaml
+    command: -config.file=/etc/promtail/config.yaml    
+    restart: always
 
 networks:
   monitoring:
