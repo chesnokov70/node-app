@@ -46,13 +46,13 @@ services:
     restart: always  
 
   promtail:
-    image: grafana/promtail:main-bfb935d
+    image: grafana/promtail:latest
     container_name: promtail
-    command: -config.file=/etc/promtail/config.yaml
     volumes:
-      - "/var/log:/var/log"
-      - "./promtail-config.yaml:/etc/promtail/config.yaml:ro"
-    restart: always
+      - /home/ubuntu/promtail/config.yaml:/etc/promtail/config.yaml
+      - /var/log:/var/log
+    command: -config.file=/etc/promtail/config.yaml -config.expand-env=true
+    restart: always    
 
 networks:
   monitoring:
