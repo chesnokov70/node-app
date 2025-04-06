@@ -50,8 +50,8 @@ services:
     container_name: promtail
     command: -config.file=/etc/promtail/config.yaml
     volumes:
-      - "/var/log:/var/log"
-      - "./promtail-config.yaml:/etc/promtail/config.yaml:ro"
+      - /var/log:/var/log
+      - ./promtail-config.yaml:/etc/promtail/config.yaml:ro
     restart: always
 
 networks:
