@@ -54,7 +54,7 @@ pipeline {
           export APP_IMG="${env.REGISTRY}:${env.BUILD_ID}"
           cd /opt
           envsubst < docker-compose.tmpl | sudo tee docker-compose.yaml
-          docker compose up -d
+
           """
         }
       }
