@@ -50,7 +50,7 @@ services:
     container_name: promtail
     command: -config.file=/etc/promtail/config.yaml -config.expand-env=true
     volumes:
-      - ./promtail-config.yaml:/etc/promtail/config.yaml:ro
+      - /opt/promtail-config.yaml:/etc/promtail/config.yaml:ro
       - /var/log:/var/log
     restart: always
 
