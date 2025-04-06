@@ -22,7 +22,7 @@ services:
     depends_on:
       - node-app
     restart: always
-    
+
   node-exporter:
     image: prom/node-exporter
     networks:
@@ -50,7 +50,7 @@ services:
     volumes:
       - /var/log:/var/log
       - ./promtail-config.yaml:/etc/promtail/promtail.yaml
-    command: -config.file=/etc/promtail/config.yaml    
+    command: -config.file=/etc/promtail/promtail.yaml    
     restart: always
 
 networks:
