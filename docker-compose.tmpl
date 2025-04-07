@@ -48,16 +48,11 @@ services:
   promtail:
     image: grafana/promtail:latest
     container_name: promtail
-
-  promtail:
-    image: grafana/promtail:latest
-    container_name: promtail
+    command: -config.file=/etc/promtail/config.yaml -config.expand-env=true
     volumes:
-      - ./promtail.yaml:/etc/promtail/config.yaml
-    networks:
-      - monitoring
+      - /promtail-config.yaml:/etc/promtail/config.yaml:ro
+      - /var/log:/var/log
     restart: always
-  
 
 
 networks:
