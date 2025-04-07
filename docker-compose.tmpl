@@ -49,7 +49,7 @@ services:
     image: grafana/promtail:latest
     container_name: promtail
     volumes:
-      - /opt/promtail-config.yaml:/etc/promtail/config.yaml  # Ensure this path matches the location of your config
+      - ./promtail-config.yaml:/etc/promtail/config.yaml  # Ensure this path matches the location of your config
     networks:
       - monitoring
     restart: always
