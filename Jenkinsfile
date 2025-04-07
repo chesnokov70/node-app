@@ -6,6 +6,7 @@ pipeline {
     gitParameter (name: 'revision', type: 'PT_BRANCH')
   }
   environment {
+    EC2_USER = "ubuntu"
     REGISTRY = "chesnokov70/node-app"
     HOST = '3.95.164.182'
     SSH_KEY = credentials('ssh_instance_key')
@@ -53,6 +54,7 @@ pipeline {
           sshCommand remote: remote, command: """
           export APP_IMG="${env.REGISTRY}:${env.BUILD_ID}"
           cd /opt
+          envsubst < promtail-config.yaml | sudo tee /etc/promtail/config.yaml
           envsubst < docker-compose.tmpl | sudo tee docker-compose.yaml
           docker compose up -d
           """
