@@ -54,7 +54,6 @@ pipeline {
           sshCommand remote: remote, command: """
           export APP_IMG="${env.REGISTRY}:${env.BUILD_ID}"
           cd /opt
-          envsubst < promtail-config.tmpl | sudo tee /etc/promtail/config.yaml
           envsubst < docker-compose.tmpl | sudo tee docker-compose.yaml
           docker compose up -d
           """
