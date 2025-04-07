@@ -49,6 +49,16 @@ services:
     image: grafana/promtail:latest
     container_name: promtail
 
+  promtail:
+    image: grafana/promtail:latest
+    container_name: promtail
+    volumes:
+      - ./promtail.yaml:/etc/promtail/config.yaml
+    networks:
+      - monitoring
+    restart: always
+  
+
 
 networks:
   monitoring:
