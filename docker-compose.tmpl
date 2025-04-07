@@ -49,9 +49,6 @@ services:
     image: grafana/promtail:latest
     container_name: promtail
     command: -config.file=/etc/promtail/config.yaml -config.expand-env=true
-    volumes:
-      - /promtail-config.yaml:/etc/promtail/config.yaml:ro
-      - /var/log:/var/log
     restart: always
 
 
