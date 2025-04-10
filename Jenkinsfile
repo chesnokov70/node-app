@@ -8,7 +8,7 @@ pipeline {
   environment {
     EC2_USER = "ubuntu"
     REGISTRY = "chesnokov70/node-app"
-    HOST = '3.95.164.182'
+    HOST = '44.220.83.59'
     SSH_KEY = credentials('ssh_instance_key')
     TOKEN = credentials('hub_token')
   }
@@ -41,7 +41,7 @@ pipeline {
          docker push "${env.REGISTRY}:${env.BUILD_ID}"
          mkdir -p /var/lib/jenkins/.ssh
          ssh-keyscan -H ${HOST} >> /var/lib/jenkins/.ssh/known_hosts
-         chmod 600 /var/lib/jenkins/.ssh/known_hosts
+         chmod 600 /var/lib/jenkins/.ssh/known_hosts        
          scp /var/lib/jenkins/workspace/My_Lessons_Folder/node-app/docker-compose.tmpl root@${HOST}:/opt
          """
         }
@@ -54,7 +54,7 @@ pipeline {
           sshCommand remote: remote, command: """
           export APP_IMG="${env.REGISTRY}:${env.BUILD_ID}"
           cd /opt
-          envsubst < docker-compose.tmpl | sudo tee docker-compose.yaml
+          envsubst < docker-compose.tmpl | sudo tee docker-compose.yaml         
           docker compose up -d
           """
         }
