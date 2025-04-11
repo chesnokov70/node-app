@@ -34,7 +34,7 @@ services:
 
   cadvisor:
     image: gcr.io/cadvisor/cadvisor
-    networks:
+    networks: 
       - monitoring    
     container_name: cadvisor
     ports:
@@ -48,8 +48,9 @@ services:
   promtail:
     image: grafana/promtail:latest
     container_name: promtail
+    command: -config.file=/etc/promtail/config.yaml
     volumes:
-      - ./promtail-config.yaml:/etc/promtail/config.yaml:ro  # Correct volume mount
+      - ./promtail-config.yaml:/etc/promtail/config.yaml:ro 
     networks:
       - monitoring  # Specify the network, not as a volume
     restart: always
