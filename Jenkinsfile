@@ -8,7 +8,7 @@ pipeline {
   environment {
     EC2_USER = "ubuntu"
     REGISTRY = "chesnokov70/node-app"
-    HOST = '44.220.83.59'
+    HOST = '98.80.188.245'
     SSH_KEY = credentials('ssh_instance_key')
     TOKEN = credentials('hub_token')
   }
@@ -43,6 +43,7 @@ pipeline {
          ssh-keyscan -H ${HOST} >> /var/lib/jenkins/.ssh/known_hosts
          chmod 600 /var/lib/jenkins/.ssh/known_hosts        
          scp /var/lib/jenkins/workspace/My_Lessons_Folder/node-app/docker-compose.tmpl root@${HOST}:/opt
+         scp /var/lib/jenkins/workspace/My_Lessons_Folder/node-app/promtail-config.yaml root@${HOST}:/opt
          """
         }
       }
