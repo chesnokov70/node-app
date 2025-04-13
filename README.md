@@ -15,3 +15,6 @@
 #-----------------------------
 # docker exec -it jenkins bash
 # rm -rf /var/jenkins_home/jobs/*/builds
+# scp /var/lib/jenkins/workspace/My_Lessons_Folder/node-app/docker-compose.tmpl root@${HOST}:/opt
+# scp /var/lib/jenkins/workspace/My_Lessons_Folder/node-app/promtail-config.yaml root@${HOST}:/opt 
+# rsync /var/lib/jenkins/workspace/My_Lessons_Folder/node-app/ root@${HOST}:/node-app
