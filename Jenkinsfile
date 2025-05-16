@@ -8,7 +8,7 @@ pipeline {
   environment {
     EC2_USER = "ubuntu"
     REGISTRY = "chesnokov70/node-app"
-    HOST = '44.204.120.231'
+    HOST = '44.206.255.34'
     SSH_KEY = credentials('ssh_instance_key')
     TOKEN = credentials('hub_token')
   }
